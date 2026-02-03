@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Grammar Practice Chat - A1/A2 Level</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 800px;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      padding: 15px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    #chatBox {
+      height: 400px;
+      overflow-y: auto;
+      padding: 20px;
+      background: #f8f9fa;
+    }
+    
+    .message {
+      margin-bottom: 15px;
+      animation: fadeIn 0.3s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .message-user {
+      background: #667eea;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 18px 18px 5px 18px;
+      display: inline-block;
+      max-width: 80%;
+      margin-left: auto;
+      float: right;
+      clear: both;
+    }
+    
+    .message-bot {
+      background: white;
+      color: #333;
+      padding: 12px 16px;
+      border-radius: 18px 18px 18px 5px;
+      display: inline-block;
+      max-width: 80%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      clear: both;
+    }
+    
+    .correction-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+      clear: both;
+    }
+    
+    .correction-box.error {
+      background: #f8d7da;
+      border-left-color: #dc3545;
+    }
+    
+    .correction-box.success {
+      background: #d4edda;
+      border-left-color: #28a745;
+    }
+    
+    .correction-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .correction-content {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .correction-example {
+      margin-top: 8px;
+      padding: 8px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 4px;
+      font-style: italic;
+    }
+    
+    .input-area {
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #e0e0e0;
+    }
+    
+    .input-wrapper {
+      display: flex;
+      gap: 10px;
+    }
+    
+    #userInput {
+      flex: 1;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 25px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    
+    #userInput:focus {
+      border-color: #667eea;
+    }
+    
+    button {
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .clearfix::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    
+    .emoji {
+      font-size: 20px;
+    }
+    
+    .tip-box {
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 5px;
+      font-size: 14px;
+      clear: both;
+    }
+    
+    .curriculum-ref {
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 5px;
+      border-left: 3px solid #ff6b6b;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎓 English Grammar Practice</h1>
+      <p>Level A1-A2 | Interactive Grammar Checker</p>
+    </div>
+    
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-number" id="sentenceCount">0</div>
+        <div class="stat-label">Sentences</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="correctCount">0</div>
+        <div class="stat-label">Correct</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="errorCount">0</div>
+        <div class="stat-label">Errors Found</div>
+      </div>
+    </div>
+    
+    <div id="chatBox">
+      <div class="message">
+        <div class="message-bot">
+          👋 Hello! I'm your English grammar assistant. Write a sentence in English and I'll help you check it for common mistakes. Don't worry about making errors - that's how we learn!
+        </div>
+      </div>
+      <div class="tip-box">
+        💡 <strong>Tip:</strong> Try starting with simple sentences like "I am happy" or "She likes pizza"
+      </div>
+    </div>
+    
+    <div class="input-area">
+      <div class="input-wrapper">
+        <input id="userInput" type="text" placeholder="Type your English sentence here..." onkeypress="handleKeyPress(event)">
+        <button onclick="chat()">Send ✉️</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let stats = {
+      sentences: 0,
+      correct: 0,
+      errors: 0
+    };
+
+    // BASE DE DATOS DEL PLAN DE ESTUDIOS A1
+    const curriculum = {
+      1: { unit: 1, class: 1, topic: "VERB 'TO BE' + POSSESSIVE ADJECTIVES + WH-QUESTIONS" },
+      2: { unit: 1, class: 2, topic: "YES/NO QUESTIONS + SHORT ANSWERS WITH 'TO BE'" },
+      5: { unit: 2, class: 5, topic: "SIMPLE PRESENT WH-QUESTIONS (WH + DO/DOES) AND ANSWER (3RD PERSON +S/ES)" },
+      6: { unit: 2, class: 6, topic: "TIME EXPRESSIONS (AT/AROUND/EARLY/LATE/UNTIL/BEFORE/AFTER/ON/IN)" },
+      10: { unit: 3, class: 10, topic: "DEMONSTRATIVES: THIS, THAT, THOSE, THESE" },
+      11: { unit: 3, class: 11, topic: "COMPARATIVES WITH SHORT AND LONG ADJECTIVES" },
+      14: { unit: 4, class: 14, topic: "WH AND YES/NO QUESTIONS - OBJECT PRONOUNS: ME, YOU, HIM, HER, US, THEM" },
+      15: { unit: 4, class: 15, topic: "YES/NO QUESTIONS WITH WOULD" },
+      19: { unit: 5, class: 19, topic: "PRESENT CONTINUOUS: YES/NO AND WH QUESTIONS; VOCABULARY: FAMILY MEMBERS" },
+      20: { unit: 5, class: 20, topic: "QUANTIFIERS: A LOT OF, NEARLY ALL, ALL, MANY, NOT MANY, FEW AND NO ONE" },
+      23: { unit: 6, class: 23, topic: "ADVERBS OF FREQUENCY: ALWAYS, ALMOST ALWAYS, USUALLY, HARDLY EVER, NEVER" },
+      24: { unit: 6, class: 24, topic: "QUESTIONS WITH HOW AND SHORT ANSWERS (HOW LONG, HOW OFTEN, HOW GOOD/WELL)" },
+      28: { unit: 7, class: 28, topic: "PAST SIMPLE + ORDINARY VERBS (AUX DID)" },
+      29: { unit: 7, class: 29, topic: "PAST SIMPLE + VERB TO BE (WERE - WAS)" },
+      32: { unit: 8, class: 32, topic: "THERE IS/ARE + PREPOSITIONS OF PLACE (IN FRONT OF, NEXT TO, BEHIND, ACROSS FROM, IN, ON)" },
+      33: { unit: 8, class: 33, topic: "HOW MUCH/MANY QUESTIONS AND QUANTIFIERS (A LOT, MANY, MUCH, FEW AND LITTLE)" },
+      37: { unit: 9, class: 37, topic: "WH QUESTIONS ABOUT DESCRIPTIONS: WHAT DO YOU LOOK LIKE + VOCABULARY ABOUT APPEARANCE" },
+      38: { unit: 9, class: 38, topic: "MODIFIERS WITH PRESENT PARTICIPLES: WHICH ONE IS SHE?" },
+      41: { unit: 10, class: 41, topic: "PRESENT PERFECT WITH ALREADY AND YET" },
+      42: { unit: 10, class: 42, topic: "PRESENT PERFECT VS SIMPLE PAST" },
+      46: { unit: 11, class: 46, topic: "ADVERBS BEFORE ADJECTIVES + CONJUNCTIONS" },
+      47: { unit: 11, class: 47, topic: "MODAL VERBS CAN AND SHOULD FOR GIVING RECOMMENDATIONS" },
+      50: { unit: 12, class: 50, topic: "RECOMMENDATIONS WITH INFINITIVES" },
+      51: { unit: 12, class: 51, topic: "SUGGESTIONS AND REQUESTS WITH MODALS: CAN, COULD AND SHOULD" },
+      55: { unit: 13, class: 55, topic: "AGREE AND DISAGREEMENT WITH 'SO, TOO, NEITHER AND EITHER'" },
+      56: { unit: 13, class: 56, topic: "REQUESTS WITH 'WOULD'" },
+      59: { unit: 14, class: 59, topic: "COMPARISONS WITH COMPARATIVE AND SUPERLATIVE FORM + VOCABULARY ABOUT GEOGRAPHY" },
+      60: { unit: 14, class: 60, topic: "QUESTIONS WITH HOW ABOUT MEASUREMENTS: HOW LONG, TALL, HIGH, DEEP, COLD AND HOT" },
+      64: { unit: 15, class: 64, topic: "FUTURE WITH 'BE GOING TO' AND PRESENT CONTINUOUS" },
+      65: { unit: 15, class: 65, topic: "MESSAGES WITH 'TELL AND SAY' + REQUESTS WITH MODALS CAN, WOULD, COULD" },
+      68: { unit: 16, class: 68, topic: "COMPARATIVE, PRESENT SIMPLE, PRESENT PERFECT AND PAST SIMPLE TENSES (CHANGES)" },
+      69: { unit: 16, class: 69, topic: "VERBS + INFINITIVES FOR EXPRESSING PLANS: GOING TO, HOPE TO, WANT TO AND WOULD LIKE TO" }
+    };
+
+    // Función mejorada de detección de errores - CORREGIDA para detectar "she go", "he eat", etc.
+    function checkGrammar(input) {
+      const originalInput = input;
+      const lowerInput = input.toLowerCase().trim();
+      
+      // Lista de verbos comunes para tercera persona
+      const commonVerbs = [
+        'like', 'want', 'need', 'have', 'eat', 'drink', 'play', 'work', 
+        'live', 'study', 'go', 'watch', 'read', 'write', 'make', 'take',
+        'think', 'know', 'speak', 'teach', 'learn', 'love', 'hate', 'prefer',
+        'understand', 'believe', 'come', 'see', 'say', 'get', 'give', 'show',
+        'find', 'tell', 'help', 'start', 'finish', 'open', 'close', 'buy',
+        'sell', 'cost', 'pay', 'meet', 'feel', 'become', 'begin', 'break',
+        'bring', 'build', 'choose', 'do', 'draw', 'drive', 'fall', 'feed',
+        'grow', 'hear', 'hold', 'keep', 'leave', 'lose', 'mean', 'put',
+        'run', 'send', 'sit', 'sleep', 'stand', 'swim', 'take', 'teach',
+        'wear', 'win', 'write'
+      ];
+      
+      // ========== DETECCIÓN DE TERCERA PERSONA SIN -S ==========
+      // Primero verificar errores de tercera persona
+      
+      // Patrón para detectar sujetos en tercera persona singular
+      const thirdPersonSubjects = ['he', 'she', 'it', 'john', 'mary', 'tom', 'lisa', 
+                                   'my friend', 'the cat', 'the dog', 'my brother', 
+                                   'my sister', 'the teacher', 'the student', 'this man',
+                                   'that woman', 'a boy', 'a girl', 'someone', 'everyone',
+                                   'nobody', 'each person', 'every student'];
+      
+      // Construir regex dinámicamente para todos los verbos
+      for (let subject of thirdPersonSubjects) {
+        for (let verb of commonVerbs) {
+          // Crear regex para el patrón "subject + verbo base" (sin -s)
+          const regex = new RegExp(`\\b${subject}\\s+${verb}\\b`, 'i');
+          if (regex.test(lowerInput)) {
+            // Verificar que NO sea ya la forma correcta con -s
+            const correctForms = {
+              'go': 'goes',
+              'watch': 'watches',
+              'teach': 'teaches',
+              'study': 'studies',
+              'try': 'tries',
+              'fly': 'flies',
+              'cry': 'cries',
+              'carry': 'carries',
+              'have': 'has',
+              'do': 'does',
+              'be': 'is'
+            };
+            
+            const correctForm = correctForms[verb] || verb + 's';
+            
+            // Verificar que no esté ya en forma correcta
+            if (!new RegExp(`\\b${subject}\\s+${correctForm}\\b`, 'i').test(lowerInput)) {
+              return {
+                error: originalInput,
+                correction: originalInput.replace(new RegExp(`\\b${verb}\\b`, 'i'), correctForm),
+                explanation: `With he/she/it (third person singular), add -s or -es to the verb in present simple.`,
+                example: `✓ She ${correctForm} to work | ✗ She ${verb} to work`,
+                classRef: 5
+              };
+            }
+          }
+        }
+      }
+      
+      // ========== THERE IS / THERE ARE ==========
+      
+      // 1. "there are a" (singular con are)
+      if (/\bthere\s+are\s+a\s+\w+/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/there\s+are\s+a/i, 'There is a'),
+          explanation: `Use 'There is' with singular nouns (a, an, one).`,
+          example: `✓ There is a cat | ✗ There are a cat`,
+          classRef: 32
+        };
+      }
+      
+      // 2. "there is" + plural (two dogs, many books, etc.)
+      if (/\bthere\s+is\s+(two|three|four|five|many|some|several|\d+)\s+\w+s\b/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/there\s+is/i, 'There are'),
+          explanation: `Use 'There are' with plural nouns (two, many, several, etc.).`,
+          example: `✓ There are two cats | ✗ There is two cats`,
+          classRef: 32
+        };
+      }
+      
+      // 3. "there are" sin sustantivo plural correcto
+      if (/\bthere\s+are\s+(cat|dog|book|car|house|student|teacher|apple)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\bthere\s+are\s+(cat|dog|book|car|house|student|teacher|apple)\b/i);
+        return {
+          error: originalInput,
+          correction: originalInput.replace(new RegExp(`\\b${match[1]}\\b`, 'i'), match[1] + 's'),
+          explanation: `After 'There are', use plural nouns (add -s).`,
+          example: `✓ There are cats | ✗ There are cat`,
+          classRef: 32
+        };
+      }
+      
+      // 4. Oraciones que empiezan con "is a/are" sin "there"
+      if (/^(is\s+a|are\s+\w+)\s+/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/^(is|are)/i, match => `There ${match}`),
+          explanation: `To say something exists, start with 'There is' or 'There are'.`,
+          example: `✓ There is a cat in my house | ✗ Is a cat in my house`,
+          classRef: 32
+        };
+      }
+      
+      // ========== PRESENTE CONTINUO (Present Progressive) ==========
+      
+      // 5. Presente continuo sin verbo BE (eating, playing sin am/is/are)
+      if (/\b(i|you|he|she|it|we|they)\s+(eating|drinking|playing|working|studying|reading|writing|watching|cooking|sleeping|running|swimming|walking|talking|listening)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\b(i|you|he|she|it|we|they)\s+(eating|drinking|playing|working|studying|reading|writing|watching|cooking|sleeping|running|swimming|walking|talking|listening)\b/i);
+        // Verificar que NO esté precedido por am/is/are
+        const before = lowerInput.substring(Math.max(0, match.index - 10), match.index);
+        if (!/\b(am|is|are)\s*$/i.test(before)) {
+          const subj = match[1];
+          const be = (subj === 'i') ? 'am' : (['he','she','it'].includes(subj)) ? 'is' : 'are';
+          return {
+            error: originalInput,
+            correction: originalInput.replace(new RegExp(`\\b${subj}\\s+${match[2]}\\b`, 'i'), `${subj} ${be} ${match[2]}`),
+            explanation: `Present continuous needs: Subject + am/is/are + verb-ing`,
+            example: `✓ I am eating | ✗ I eating`,
+            classRef: 19
+          };
+        }
+      }
+      
+      // 6. "am/is/are + verbo base" (sin -ing)
+      if (/\b(am|is|are)\s+(eat|drink|play|work|study|read|write|watch|cook|sleep|run|swim|walk|talk|listen)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\b(am|is|are)\s+(eat|drink|play|work|study|read|write|watch|cook|sleep|run|swim|walk|talk|listen)\b/i);
+        const verb = match[2];
+        const verbIng = verb.endsWith('e') && verb !== 'see' ? verb.slice(0,-1) + 'ing' :
+                       ['run', 'swim', 'shop', 'stop', 'sit'].includes(verb) ? verb + verb.slice(-1) + 'ing' :
+                       verb + 'ing';
+        return {
+          error: originalInput,
+          correction: originalInput.replace(new RegExp(`${match[1]}\\s+${verb}\\b`, 'i'), `${match[1]} ${verbIng}`),
+          explanation: `For present continuous, add -ing to the verb after am/is/are.`,
+          example: `✓ I am eating | ✗ I am eat`,
+          classRef: 19
+        };
+      }
+      
+      // 7. "now" con presente simple en lugar de continuo
+      if (/\bnow\b/i.test(lowerInput)) {
+        if (/\b(i|you|he|she|it|we|they)\s+(eat|drink|play|work|study|read|write|watch|cook)\s+now/i.test(lowerInput)) {
+          const match = lowerInput.match(/\b(i|you|he|she|it|we|they)\s+(eat|drink|play|work|study|read|write|watch|cook)\s+now/i);
+          const subj = match[1];
+          const verb = match[2];
+          const be = (subj === 'i') ? 'am' : (['he','she','it'].includes(subj)) ? 'is' : 'are';
+          const verbIng = verb.endsWith('e') ? verb.slice(0,-1) + 'ing' : verb + 'ing';
+          return {
+            error: originalInput,
+            correction: originalInput.replace(new RegExp(`${subj}\\s+${verb}`, 'i'), `${subj} ${be} ${verbIng}`),
+            explanation: `With 'now', use present continuous (am/is/are + verb-ing).`,
+            example: `✓ I am eating now | ✗ I eat now`,
+            classRef: 19
+          };
+        }
+      }
+      
+      // ========== PASADO CONTINUO (Past Progressive) ==========
+      
+      // 8. Pasado continuo sin was/were
+      if (/\b(yesterday|last night|at \d+|when)\b.*\b(i|you|he|she|it|we|they)\s+(eating|drinking|playing|working|studying|reading|writing|watching)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\b(i|you|he|she|it|we|they)\s+(eating|drinking|playing|working|studying|reading|writing|watching)\b/i);
+        if (match) {
+          const before = lowerInput.substring(Math.max(0, match.index - 10), match.index);
+          if (!/\b(was|were)\s*$/i.test(before)) {
+            const subj = match[1];
+            const waswere = (['i','he','she','it'].includes(subj)) ? 'was' : 'were';
+            return {
+              error: originalInput,
+              correction: originalInput.replace(new RegExp(`${subj}\\s+${match[2]}`, 'i'), `${subj} ${waswere} ${match[2]}`),
+              explanation: `Past continuous needs: Subject + was/were + verb-ing`,
+              example: `✓ I was eating yesterday | ✗ I eating yesterday`,
+              classRef: 29
+            };
+          }
+        }
+      }
+      
+      // 9. "was/were + verbo base" (sin -ing en pasado continuo)
+      if (/\b(was|were)\s+(eat|drink|play|work|study|read|write|watch|cook|sleep)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\b(was|were)\s+(eat|drink|play|work|study|read|write|watch|cook|sleep)\b/i);
+        const verb = match[2];
+        const verbIng = verb.endsWith('e') ? verb.slice(0,-1) + 'ing' : verb + 'ing';
+        return {
+          error: originalInput,
+          correction: originalInput.replace(new RegExp(`${match[1]}\\s+${verb}\\b`, 'i'), `${match[1]} ${verbIng}`),
+          explanation: `For past continuous, add -ing to the verb after was/were.`,
+          example: `✓ I was eating | ✗ I was eat`,
+          classRef: 29
+        };
+      }
+      
+      // ========== PASADO SIMPLE ==========
+      
+      // 10. Detectar "I go/play/work/etc + yesterday/last week" (verbo presente con tiempo pasado)
+      if (/\b(yesterday|last\s+(night|week|month|year)|ago)\b/i.test(lowerInput)) {
+        // Lista de verbos regulares comunes
+        const regularVerbs = ['work', 'play', 'walk', 'watch', 'study', 'live', 'like', 'want', 'need', 'help', 'talk', 'listen', 'clean', 'cook', 'visit', 'start', 'finish', 'arrive', 'call', 'open', 'close', 'rain', 'snow'];
+        for (let verb of regularVerbs) {
+          const regex = new RegExp(`\\b(i|you|he|she|it|we|they)\\s+${verb}\\b`, 'i');
+          if (regex.test(lowerInput) && !new RegExp(`${verb}(ed|d)\\b`).test(lowerInput)) {
+            const pastForm = verb.endsWith('e') ? verb + 'd' : verb.endsWith('y') ? verb.slice(0,-1) + 'ied' : verb + 'ed';
+            return {
+              error: originalInput,
+              correction: originalInput.replace(new RegExp(`\\b${verb}\\b`, 'i'), pastForm),
+              explanation: `When you mention a past time (yesterday, last week, etc.), use past tense. Add -ed to regular verbs.`,
+              example: `✓ I ${pastForm} yesterday | ✗ I ${verb} yesterday`,
+              classRef: 28
+            };
+          }
+        }
+        
+        // Verbos irregulares comunes
+        const irregularVerbs = {
+          'go': 'went', 'eat': 'ate', 'drink': 'drank', 'see': 'saw', 
+          'come': 'came', 'make': 'made', 'take': 'took', 'get': 'got',
+          'have': 'had', 'do': 'did', 'say': 'said', 'give': 'gave',
+          'write': 'wrote', 'read': 'read', 'buy': 'bought', 'run': 'ran',
+          'swim': 'swam', 'sing': 'sang', 'think': 'thought', 'bring': 'brought',
+          'teach': 'taught', 'catch': 'caught', 'feel': 'felt', 'leave': 'left',
+          'meet': 'met', 'sit': 'sat', 'sleep': 'slept', 'speak': 'spoke',
+          'tell': 'told', 'understand': 'understood', 'wear': 'wore', 'win': 'won'
+        };
+        
+        for (let [present, past] of Object.entries(irregularVerbs)) {
+          const regex = new RegExp(`\\b(i|you|he|she|it|we|they)\\s+${present}\\b`, 'i');
+          if (regex.test(lowerInput) && !new RegExp(`\\b${past}\\b`).test(lowerInput)) {
+            return {
+              error: originalInput,
+              correction: originalInput.replace(new RegExp(`\\b${present}\\b`, 'i'), past),
+              explanation: `'${present}' is an irregular verb. In past tense, it becomes '${past}' (not ${present}ed).`,
+              example: `✓ I ${past} yesterday | ✗ I ${present} yesterday`,
+              classRef: 28
+            };
+          }
+        }
+      }
+      
+      // ========== VERBO TO BE ==========
+      
+      // 11. Verbo to be faltante (she teacher, he happy, etc.)
+      if (/\b(i|he|she|it|we|you|they)\s+(a\s+)?(teacher|student|doctor|nurse|engineer|happy|sad|tired|hungry|cold|hot|tall|short|smart|nice|beautiful|handsome|young|old|ready|busy|late|early)\b/i.test(lowerInput)) {
+        if (!/\b(am|is|are|was|were)\b/i.test(lowerInput)) {
+          const match = lowerInput.match(/\b(i|he|she|it|we|you|they)\s+(a\s+)?(teacher|student|doctor|nurse|engineer|happy|sad|tired|hungry|cold|hot|tall|short|smart|nice|beautiful|handsome|young|old|ready|busy|late|early)\b/i);
+          const subj = match[1];
+          const article = match[2] || '';
+          const word = match[3];
+          const verb = (subj === 'i') ? 'am' : (['he','she','it'].includes(subj)) ? 'is' : 'are';
+          return {
+            error: originalInput,
+            correction: `${subj.charAt(0).toUpperCase() + subj.slice(1)} ${verb} ${article}${word}`,
+            explanation: `Missing verb 'to be'. Always use: I am / He-She-It is / You-We-They are`,
+            example: `✓ She is a teacher | ✗ She teacher`,
+            classRef: 1
+          };
+        }
+      }
+      
+      // ========== PRESENTE SIMPLE - DETECCIÓN ADICIONAL ==========
+      
+      // Detección mejorada de tercera persona - método alternativo
+      const thirdPersonRegex = /\b(he|she|it|john|mary|tom|lisa|my friend|the cat|the dog|my brother|my sister|the teacher|the student|this person|that man|that woman|a child)\s+(\w+)\s+(to\s+)?\w+/i;
+      const thirdPersonMatch = lowerInput.match(thirdPersonRegex);
+      if (thirdPersonMatch) {
+        const subject = thirdPersonMatch[1];
+        const verb = thirdPersonMatch[2];
+        
+        // Lista de verbos que deben tener -s en tercera persona
+        if (commonVerbs.includes(verb.toLowerCase())) {
+          const correctForms = {
+            'go': 'goes',
+            'watch': 'watches',
+            'teach': 'teaches',
+            'study': 'studies',
+            'try': 'tries',
+            'fly': 'flies',
+            'cry': 'cries',
+            'carry': 'carries',
+            'have': 'has',
+            'do': 'does',
+            'be': 'is'
+          };
+          
+          const correctForm = correctForms[verb.toLowerCase()] || verb.toLowerCase() + 's';
+          
+          // Verificar si el verbo ya está en forma correcta
+          const currentForm = thirdPersonMatch[0].toLowerCase();
+          const correctFormPattern = new RegExp(`\\b${subject}\\s+${correctForm}\\b`, 'i');
+          
+          if (!correctFormPattern.test(originalInput) && 
+              !/(doesn't|does not|can|will|should|could|would|may|might|must)\s+\w+/i.test(currentForm) &&
+              !/(am|is|are|was|were)\s+\w+/i.test(currentForm)) {
+            
+            // Verificar que no sea un modal o auxiliar
+            const modals = ['can', 'will', 'should', 'could', 'would', 'may', 'might', 'must'];
+            if (!modals.includes(verb.toLowerCase())) {
+              return {
+                error: originalInput,
+                correction: originalInput.replace(new RegExp(`\\b${subject}\\s+${verb}\\b`, 'i'), `${subject} ${correctForm}`),
+                explanation: `With ${subject} (third person singular), add -s or -es to the verb in present simple.`,
+                example: `✓ ${subject} ${correctForm} ... | ✗ ${subject} ${verb} ...`,
+                classRef: 5
+              };
+            }
+          }
+        }
+      }
+      
+      // ========== PLURALES ==========
+      
+      // 12. Plural sin -s (two dog, many book, etc.)
+      if (/\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|many|some|several|few|a lot of)\s+(dog|cat|book|car|house|student|teacher|apple|orange|banana|person|child|pen|pencil|table|chair|computer|phone|friend|brother|sister)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|many|some|several|few|a lot of)\s+(dog|cat|book|car|house|student|teacher|apple|orange|banana|person|child|pen|pencil|table|chair|computer|phone|friend|brother|sister)\b/i);
+        const number = match[1];
+        const noun = match[2];
+        const plural = noun === 'person' ? 'people' : 
+                      noun === 'child' ? 'children' : 
+                      noun + 's';
+        return {
+          error: originalInput,
+          correction: `${number} ${plural}`,
+          explanation: `Plural nouns need -s (or irregular form) after numbers or quantity words.`,
+          example: `✓ ${number} ${plural} | ✗ ${number} ${noun}`,
+          classRef: 20
+        };
+      }
+      
+      // ========== NEGACIONES ==========
+      
+      // 13. don't vs doesn't
+      if (/\b(he|she|it|john|mary|the cat)\s+don't\b/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/don't/i, "doesn't"),
+          explanation: `Use 'doesn't' (not don't) with he/she/it.`,
+          example: `✓ He doesn't like coffee | ✗ He don't like coffee`,
+          classRef: 5
+        };
+      }
+      
+      if (/\b(i|you|we|they)\s+doesn't\b/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/doesn't/i, "don't"),
+          explanation: `Use 'don't' (not doesn't) with I/you/we/they.`,
+          example: `✓ I don't like coffee | ✗ I doesn't like coffee`,
+          classRef: 5
+        };
+      }
+      
+      // 14. Negación con "no" en lugar de "don't/doesn't"
+      if (/\b(i|you|he|she|it|we|they)\s+no\s+(like|want|need|have|eat|drink|play|work|live|study|know|understand|speak)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\b(i|you|he|she|it|we|they)\s+no\s+(like|want|need|have|eat|drink|play|work|live|study|know|understand|speak)\b/i);
+        const subj = match[1];
+        const verb = match[2];
+        const aux = ['he','she','it'].includes(subj) ? "doesn't" : "don't";
+        return {
+          error: originalInput,
+          correction: `${subj.charAt(0).toUpperCase() + subj.slice(1)} ${aux} ${verb}`,
+          explanation: `Use don't/doesn't for negative sentences in present simple (not 'no').`,
+          example: `✓ I don't like it | ✗ I no like it`,
+          classRef: 5
+        };
+      }
+      
+      // ========== PREGUNTAS ==========
+      
+      // 15. Preguntas con be - orden incorrecto (you are happy?)
+      if (/\b(you|he|she|it|we|they)\s+(am|is|are)\s+\w+\?/i.test(lowerInput)) {
+        const match = lowerInput.match(/\b(you|he|she|it|we|they)\s+(am|is|are)\s+(\w+)/i);
+        return {
+          error: originalInput,
+          correction: `${match[2].charAt(0).toUpperCase() + match[2].slice(1)} ${match[1]} ${match[3]}?`,
+          explanation: `In questions with verb 'be', put the verb BEFORE the subject.`,
+          example: `✓ Are you happy? | ✗ You are happy?`,
+          classRef: 2
+        };
+      }
+      
+      // 16. Preguntas sin do/does
+      if (/\b(what|where|when|why|how)\s+(you|he|she|it|we|they)\s+(like|want|eat|drink|do|live|work|study)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\b(what|where|when|why|how)\s+(you|he|she|it|we|they)\s+(like|want|eat|drink|do|live|work|study)\b/i);
+        const aux = ['he','she','it'].includes(match[2]) ? 'does' : 'do';
+        return {
+          error: originalInput,
+          correction: `${match[1].charAt(0).toUpperCase() + match[1].slice(1)} ${aux} ${match[2]} ${match[3]}?`,
+          explanation: `Questions in present simple need 'do/does' before the subject.`,
+          example: `✓ Where do you live? | ✗ Where you live?`,
+          classRef: 5
+        };
+      }
+      
+      // ========== ARTÍCULOS ==========
+      
+      // 17. A vs AN
+      if (/\ban\s+[bcdfghjklmnpqrstvwxyz]\w+/i.test(lowerInput) && !/\ban\s+hour/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/\ban\s+/i, 'a '),
+          explanation: `Use 'a' before consonant sounds (b, c, d, f, g, etc.).`,
+          example: `✓ a teacher | ✗ an teacher`,
+          classRef: 1
+        };
+      }
+      
+      if (/\ba\s+[aeiou]\w+/i.test(lowerInput) && !/\ba\s+university|\ba\s+european/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/\ba\s+/i, 'an '),
+          explanation: `Use 'an' before vowel sounds (a, e, i, o, u).`,
+          example: `✓ an apple | ✗ a apple`,
+          classRef: 1
+        };
+      }
+      
+      // ========== PREPOSICIONES ==========
+      
+      // 18. in vs on con transporte
+      if (/\bin\s+the\s+(bus|train|plane|metro|subway)\b/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/in the/i, 'on the'),
+          explanation: `Use 'on' (not 'in') with public transport.`,
+          example: `✓ on the bus | ✗ in the bus`,
+          classRef: 32
+        };
+      }
+      
+      // 19. on vs in con carro
+      if (/\bon\s+the\s+car\b/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/on the car/i, 'in the car'),
+          explanation: `Use 'in' (not 'on') with cars and taxis.`,
+          example: `✓ in the car | ✗ on the car`,
+          classRef: 32
+        };
+      }
+      
+      // 20. at vs in con lugares
+      if (/\bin\s+home\b/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/in home/i, 'at home'),
+          explanation: `Say 'at home' (not 'in home').`,
+          example: `✓ I am at home | ✗ I am in home`,
+          classRef: 32
+        };
+      }
+      
+      // ========== OTROS ERRORES COMUNES ==========
+      
+      // 21. Can + to
+      if (/\bcan\s+to\s+\w+/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/can\s+to\s+/i, 'can '),
+          explanation: `Don't use 'to' after 'can'. Use: can + verb (without 'to')`,
+          example: `✓ I can swim | ✗ I can to swim`,
+          classRef: 47
+        };
+      }
+      
+      // 22. Much vs Many
+      if (/\bhow\s+much\s+(books|dogs|cats|cars|apples|people|students|friends)\b/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/how\s+much/i, 'How many'),
+          explanation: `Use 'How many' with countable nouns (things you can count).`,
+          example: `✓ How many books? | ✗ How much books?`,
+          classRef: 33
+        };
+      }
+      
+      // 23. Some vs Any en negativas
+      if (/\bdon't\s+have\s+some\b/i.test(lowerInput)) {
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/some/i, 'any'),
+          explanation: `Use 'any' (not 'some') in negative sentences.`,
+          example: `✓ I don't have any money | ✗ I don't have some money`,
+          classRef: 20
+        };
+      }
+      
+      // 24. Comparativos incorrectos
+      if (/\bmore\s+(big|small|tall|short|old|young|fast|slow|hot|cold|cheap|rich|poor)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\bmore\s+(big|small|tall|short|old|young|fast|slow|hot|cold|cheap|rich|poor)\b/i);
+        const adj = match[1];
+        const comp = adj === 'big' ? 'bigger' : 
+                    adj === 'hot' ? 'hotter' :
+                    adj + 'er';
+        return {
+          error: originalInput,
+          correction: originalInput.replace(/more\s+\w+/i, comp),
+          explanation: `Short adjectives (1-2 syllables) use -er for comparatives, not 'more'.`,
+          example: `✓ ${comp} than | ✗ more ${adj} than`,
+          classRef: 11
+        };
+      }
+      
+      // 25. Like + verbo base sin -ing o to
+      if (/\blike\s+(eat|drink|play|swim|dance|sing|read|write|watch|listen)\b/i.test(lowerInput)) {
+        const match = lowerInput.match(/\blike\s+(eat|drink|play|swim|dance|sing|read|write|watch|listen)\b/i);
+        const verb = match[1];
+        return {
+          error: originalInput,
+          correction: originalInput.replace(new RegExp(`like\\s+${verb}\\b`, 'i'), `like ${verb}ing / like to ${verb}`),
+          explanation: `After 'like' use verb-ing OR 'to + verb'.`,
+          example: `✓ I like eating | ✓ I like to eat`,
+          classRef: 1
+        };
+      }
+      
+      // Si no se encontró ningún error específico
+      return null;
+    }
+
+    function updateStats() {
+      document.getElementById('sentenceCount').textContent = stats.sentences;
+      document.getElementById('correctCount').textContent = stats.correct;
+      document.getElementById('errorCount').textContent = stats.errors;
+    }
+
+    function addMessage(content, isUser = false) {
+      const chatBox = document.getElementById('chatBox');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message clearfix';
+      
+      const messageContent = document.createElement('div');
+      messageContent.className = isUser ? 'message-user' : 'message-bot';
+      messageContent.innerHTML = content;
+      
+      messageDiv.appendChild(messageContent);
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function addCorrectionBox(feedback, isCorrect) {
+      const chatBox = document.getElementById('chatBox');
+      const correctionDiv = document.createElement('div');
+      correctionDiv.className = `correction-box ${isCorrect ? 'success' : 'error'} clearfix`;
+      correctionDiv.innerHTML = feedback;
+      chatBox.appendChild(correctionDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    const encouragements = [
+      "Great effort! Keep practicing! 🌟",
+      "You're doing well! Every mistake is a learning opportunity! 💪",
+      "Nice try! Learning takes time, and you're making progress! 🎯",
+      "Excellent work! Keep it up! 🚀",
+      "You're on the right track! 👍"
+    ];
+
+    const tips = [
+      "💡 <strong>Tip:</strong> Read your sentence out loud before sending it",
+      "💡 <strong>Tip:</strong> Remember: Subject + Verb + Object is the basic English sentence structure",
+      "💡 <strong>Tip:</strong> Practice makes perfect! Don't be afraid to make mistakes",
+      "💡 <strong>Tip:</strong> Try writing about your daily activities to practice",
+      "💡 <strong>Tip:</strong> Pay attention to verb forms - they change with different subjects"
+    ];
+
+    function chat() {
+      const input = document.getElementById('userInput').value.trim();
+      
+      if (input === '') {
+        return;
+      }
+      
+      // Agregar mensaje del usuario
+      addMessage(input, true);
+      
+      // Actualizar estadísticas
+      stats.sentences++;
+      
+      // Verificar gramática
+      const grammarFeedback = checkGrammar(input);
+      
+      if (grammarFeedback) {
+        stats.errors++;
+        
+        // Obtener información del currículo si hay referencia de clase
+        let classInfo = '';
+        if (grammarFeedback.classRef && curriculum[grammarFeedback.classRef]) {
+          const currInfo = curriculum[grammarFeedback.classRef];
+          classInfo = `
+            <div class="curriculum-ref">
+              <strong>📚 Study Reference:</strong><br>
+              <strong>Unit ${currInfo.unit} - Class ${currInfo.class}</strong><br>
+              <em>${currInfo.topic}</em>
+            </div>
+          `;
+        }
+        
+        const feedbackHTML = `
+          <div class="correction-title">
+            <span class="emoji">⚠️</span> Grammar Check - Error Found
+          </div>
+          <div class="correction-content">
+            <strong>Issue:</strong> ${grammarFeedback.explanation}<br>
+            <strong>✅ Correction:</strong> ${grammarFeedback.correction}<br>
+            <div class="correction-example">${grammarFeedback.example}</div>
+            ${classInfo}
+          </div>
+        `;
+        addCorrectionBox(feedbackHTML, false);
+      } else {
+        stats.correct++;
+        const feedbackHTML = `
+          <div class="correction-title">
+            <span class="emoji">✅</span> Grammar Check - Perfect!
+          </div>
+          <div class="correction-content">
+            Your sentence looks grammatically correct! Well done! 🎉
+          </div>
+        `;
+        addCorrectionBox(feedbackHTML, true);
+      }
+      
+      updateStats();
+      
+      // Mensaje motivador
+      const encouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
+      setTimeout(() => {
+        addMessage(encouragement);
+      }, 500);
+      
+      // Mostrar consejo ocasionalmente
+      if (stats.sentences % 3 === 0) {
+        const tip = tips[Math.floor(Math.random() * tips.length)];
+        setTimeout(() => {
+          const chatBox = document.getElementById('chatBox');
+          const tipDiv = document.createElement('div');
+          tipDiv.className = 'tip-box clearfix';
+          tipDiv.innerHTML = tip;
+          chatBox.appendChild(tipDiv);
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }, 1000);
+      }
+      
+      // Limpiar input
+      document.getElementById('userInput').value = '';
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+        chat();
+      }
+    }
+  </script>
+</body>
+</html>
